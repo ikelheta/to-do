@@ -30,17 +30,7 @@ export default class TodoView {
         }
     }
 
-    static async getAll(req,res){
-        try {
-            const data = await TodoController.getMany(req);
-            return res.send({
-                success : true,
-                data
-            });
-        } catch (error) {
-            throw new AppError(error);
-        }
-    }
+ 
 
 
 
