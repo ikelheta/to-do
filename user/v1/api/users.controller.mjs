@@ -4,6 +4,8 @@ import { createToken } from "../../../middlewares/user.auth.mjs"
 import UserProvider from "./users.provider.mjs"
 import {compare} from "bcrypt"
 import { BadRequestError, NotFoundError, UnauthorizedError } from "../../../shared/app-error.mjs";
+import TodoProvider from "../../../todo/v1/api/todo.provider.mjs"
+
 
 export default class UserController {
     static async signUp(req) {
@@ -74,6 +76,7 @@ export default class UserController {
         const filters = {_id}
         const [deletedUser, deletedTodo] = await Promise.all([
             UserProvider.deleteOne(filters),
+            TodoProvider.deleteMany({userId: _id})
         ])
         return {deletedUser}
     }
