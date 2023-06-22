@@ -7,7 +7,7 @@ const todoRoutes = Router();
 
 
 todoRoutes.use(asyncWrapper(userAuth))
-todoRoutes.route('/').post(asyncWrapper( TodoView.create))
+todoRoutes.route('/').post(asyncWrapper( TodoView.create)).get(asyncWrapper(TodoView.getAll))
 todoRoutes.route('/:todoId').get( asyncWrapper(TodoView.getOne)).delete(asyncWrapper(TodoView.delete)).put(asyncWrapper(TodoView.update))
 
 

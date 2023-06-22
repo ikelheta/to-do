@@ -1,6 +1,7 @@
 import _ from "lodash";
 import {  UnauthorizedError } from "../../../shared/app-error.mjs";
 import TodoProvider from "./todo.provider.mjs"
+import { handlePaginationSort } from "../../../shared/handle-pagination-sort.mjs"
 
 export default class UserController {
     static async createTodo(req){
@@ -22,17 +23,27 @@ export default class UserController {
         }
 
         const todo = await TodoProvider.findOneOrThrowError(filters)
-        console.info(userId)
-        console.info(todo)
+      
         if(String(todo.userId) != String (userId)){
             throw new UnauthorizedError()
         }
         return todo
     }
 
+    static async getMany(req){
+        const { skip, limit, sort } = handlePaginationSort(req.query)
+
+        const options = {
+            skip,
+            limit,
+            sort,
+        }
+        const  userId  = req.user._id
+        const todos = await TodoProvider.findAll({userId}, {}, options)
+        return todos
+    }
 
 
-   
     static async update(req) {
         const  userId  = req.user._id
         const {todoId} =req.params
